@@ -10,9 +10,19 @@ export class AppService {
   getUsers():User[] {
     return this.users
   }
-  
-  getTweets(){
-    return this.tweet
+
+  getTweets(page:number){
+    const lastTweets = this.tweet.map((o, i)=>{
+        return{
+          username: o.user.username,
+          avatar: o.user.avatar,
+          tweet: o.tweet
+        }
+      
+      
+    }).reverse().slice((page-1 | 0)*15, (page|1)*15)
+
+    return lastTweets
   }
 
   signUp(body:CreateUserDtos){

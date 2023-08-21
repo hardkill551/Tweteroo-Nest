@@ -7,6 +7,10 @@ export class AppService {
   private users:User[] = [];
   private tweet:Tweet[] = [];
 
+  getHello(): string {
+    return "I'm okay!";
+  }
+
   getUsers():User[] {
     return this.users
   }

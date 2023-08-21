@@ -12,7 +12,7 @@ export class AppService {
   }
 
   getTweets(page:number){
-    const lastTweets = this.tweet.map((o, i)=>{
+    const lastTweets = this.tweet.map(o=>{
         return{
           username: o.user.username,
           avatar: o.user.avatar,
@@ -24,7 +24,16 @@ export class AppService {
 
     return lastTweets
   }
-
+  getUsernameTweets(username:string){
+    const userTweets = this.tweet.filter(o=>o.user.username===username).map(o=>{
+      return{
+        username: o.user.username,
+        avatar: o.user.avatar,
+        tweet: o.tweet
+      }
+  }).reverse()
+  return userTweets
+  }
   signUp(body:CreateUserDtos){
     const user = new User(body.username, body.avatar)
     return this.users.push(user)

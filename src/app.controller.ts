@@ -6,32 +6,33 @@ import { CreateTweetDtos, CreateUserDtos } from './dtos/dtos';
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
-
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
-  }
   @Get("users")
   getUsers():User[]{
     return this.appService.getUsers()
   }
+
+  @Get("tweets")
+  getTweets(){
+    return this.appService.getTweets()
+  }
+
   @Post("sign-up")
   @HttpCode(200)
   signUp(@Body() body:CreateUserDtos){
-    return this.appService.signUp(body)
+    try {
+      return this.appService.signUp(body)
+    } catch (error) {
+      throw new HttpException("All fields are required!", HttpStatus.BAD_REQUEST)
+    }
   }
+
   @Post("tweets")
   postTweet(@Body() body:CreateTweetDtos){
     try {
       return this.appService.postTweet(body)
     } catch (error) {
-      throw new HttpException(error.message, HttpStatus.CONFLICT)
+      if(error.message === "Usuário não encontrado") throw new HttpException(error.message, HttpStatus.UNAUTHORIZED)
+      throw new HttpException("All fields are required!", HttpStatus.BAD_REQUEST)
     }
-    
-  }
-  @Get("tweets")
-  getTweets(){
-    return this.appService.getTweets()
-
   }
 }

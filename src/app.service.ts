@@ -7,12 +7,14 @@ export class AppService {
   private users:User[] = [];
   private tweet:Tweet[] = [];
 
-  getHello(): string {
-    return 'Hello World!';
-  }
   getUsers():User[] {
     return this.users
   }
+  
+  getTweets(){
+    return this.tweet
+  }
+
   signUp(body:CreateUserDtos){
     const user = new User(body.username, body.avatar)
     return this.users.push(user)
@@ -22,8 +24,5 @@ export class AppService {
     if(!user) throw new Error("Usuário não encontrado")
     const tweet = new Tweet(user, body.tweet)
     return this.tweet.push(tweet)
-  }
-  getTweets(){
-    return this.tweet
   }
 }
